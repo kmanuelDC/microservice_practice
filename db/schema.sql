@@ -45,11 +45,11 @@ CREATE TABLE IF NOT EXISTS idempotency_keys (
   `key` VARCHAR(128) PRIMARY KEY,
   target_type ENUM('order_confirm') NOT NULL,
   target_id BIGINT NOT NULL,
-  status ENUM('SUCCESS','ERROR') NOT NULL,
+  status ENUM('CREATED','SUCCEEDED','FAILED') NOT NULL,
   response_body JSON NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   expires_at TIMESTAMP NULL
 );
 
--- Opcional: índice por expiración para limpieza
-CREATE INDEX IF NOT EXISTS idx_idem_expires ON idempotency_keys (expires_at);
+-- Índice por expiración ()
+CREATE INDEX idx_idem_expires ON idempotency_keys (expires_at);

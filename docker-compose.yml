@@ -31,23 +31,22 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3001
-      # DB
       DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: b2b
       DB_PASSWORD: b2b
       DB_NAME: b2b
-      # AUTH
-      JWT_SECRET: super_secret_for_jwt
-      SERVICE_TOKEN: super_secret_service_token
+      JWT_SECRET: s3cretK3y
+      SERVICE_TOKEN: S3CR3T_T0K3N_K3Y
       TZ: America/Lima
+      
     depends_on:
       mysql:
         condition: service_healthy
     ports:
       - "3001:3001"
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3001/health || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://customers_api:3001/health || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -70,8 +69,8 @@ services:
       # CUSTOMERS INTERNAL CALL
       CUSTOMERS_INTERNAL_BASE: http://customers-api:3001
       # AUTH
-      JWT_SECRET: super_secret_for_jwt
-      SERVICE_TOKEN: super_secret_service_token
+      JWT_SECRET: s3cretK3y
+      SERVICE_TOKEN: S3CR3T_T0K3N_K3Y
       TZ: America/Lima
     depends_on:
       mysql:
@@ -81,7 +80,7 @@ services:
     ports:
       - "3002:3002"
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3002/health || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://orders_api:3002/health || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -95,10 +94,10 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3003
-      CUSTOMERS_INTERNAL_BASE: http://customers-api:3001
+      CUSTOMERS_BASE: http://customers_api:3001
       ORDERS_BASE: http://orders-api:3002
-      ##SERVICE_TOKEN: {}
-      JWT_SECRET: super_secret_for_jwt
+      SERVICE_TOKEN: S3CR3T_T0K3N_K3Y
+      JWT_SECRET: s3cretK3y
       REQUEST_TIMEOUT_MS: 5000
       TZ: America/Lima
     depends_on:
@@ -109,7 +108,7 @@ services:
     ports:
       - "3003:3003"
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3003/health || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://orchestrator_api:3003/health || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
