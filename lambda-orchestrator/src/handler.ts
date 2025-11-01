@@ -140,7 +140,7 @@ export async function handler(event: ApiGwEvent) {
         }
     }
 
-    console.log('JWT_SECRET', JWT_SECRET);
+    //console.log('JWT_SECRET', JWT_SECRET);
     // 4) Token s2s corto para Orders (JWT simple)
     const ordersToken = jwt.sign(
         { sub: 'lambda-orchestrator', role: 'service', aud: 'orders-api' },
@@ -165,9 +165,8 @@ export async function handler(event: ApiGwEvent) {
         });
     }
 
-    const orderCreated = createOrder.json; // { id, status: "CREATED", ... }
+    const orderCreated = createOrder.json;
 
-    // 6) Confirmar orden con idempotencia
     const confirm = await fetchJson(`${ORDERS_BASE}/orders/${orderCreated.id}/confirm`, {
         method: 'POST',
         headers: {
@@ -176,7 +175,6 @@ export async function handler(event: ApiGwEvent) {
             'X-Idempotency-Key': body.idempotency_key,
         },
     });
-    
 
     if (!confirm.ok) {
         return jsonResponse(502, {
@@ -187,15 +185,13 @@ export async function handler(event: ApiGwEvent) {
         });
     }
 
-    const confirmed = confirm.json; // { id, status: "CONFIRMED", total_cents, items: [...] }
-
-    // 7) Traer cliente para respuesta consolidada (puede ser /internal nuevamente)
+    const confirmed = confirm.json; 
     const customerResp = await fetchJson(`${CUSTOMERS_BASE}/internal/customers/${body.customer_id}`, {
         method: 'GET',
         headers: { ...baseHeaders, Authorization: `Bearer ${SERVICE_TOKEN}` },
     });
+    console.log('customerResp', customerResp);
 
-    // 8) Respuesta (201 según ejemplo de la PT)
     return jsonResponse(201, {
         success: true,
         correlationId: correlationId,
