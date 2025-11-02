@@ -1,8 +1,10 @@
 import express from 'express';
 import { handler } from './handler.js';
+import { mountDocs } from './docs.js';
 
 const app = express();
 app.use(express.json());
+mountDocs(app);
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
