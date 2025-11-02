@@ -13,7 +13,9 @@
         "mysql2": "^3",
         "dotenv": "^16",
         "jsonwebtoken": "^9",
-        "node-fetch": "^3"
+        "node-fetch": "^3",
+        "yaml": "^2",
+        "swagger-ui-express": "^5"
     },
     "devDependencies": {
         "typescript": "^5",

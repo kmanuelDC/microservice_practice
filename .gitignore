@@ -2,3 +2,5 @@
 *dist
 *build
 *.env
+*.dockerignore
+*package-lock.json
