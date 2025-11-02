@@ -1,0 +1,110 @@
+{
+  "C:\\Users\\SegundoDiaz-MS4M\\Documents\\CURSO\\B2B\\b2b_t3nich4l\\lambda-orchestrator\\serverless.yml": {
+    "versionFramework": "4.22.0",
+    "servicePath": "C:\\Users\\SegundoDiaz-MS4M\\Documents\\CURSO\\B2B\\b2b_t3nich4l\\lambda-orchestrator\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "lambda-orchestrator",
+      "frameworkVersion": "4",
+      "plugins": [
+        "serverless-offline"
+      ],
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "stage": "local",
+        "environment": {
+          "NODE_ENV": "development",
+          "PORT": "3003",
+          "CUSTOMERS_BASE": "http://localhost:3001",
+          "ORDERS_BASE": "http://localhost:3002",
+          "SERVICE_TOKEN": "<REDACTED>",
+          "JWT_SECRET": "<REDACTED>"
+        },
+        "region": "us-east-1",
+        "versionFunctions": true
+      },
+      "functions": {
+        "orchestrate": {
+          "handler": "src/handler.handler",
+          "events": [
+            {
+              "httpApi": {
+                "routeKey": "POST /orchestrator/create-and-confirm-order",
+                "isHttpApi": true,
+                "payload": "2.0"
+              }
+            }
+          ],
+          "name": "lambda-orchestrator-local-orchestrate",
+          "environment": {
+            "NODE_OPTIONS": "--enable-source-maps"
+          }
+        }
+      },
+      "build": {
+        "esbuild": true,
+        "sourcemap": true,
+        "minify": false,
+        "format": "cjs",
+        "target": "node20",
+        "exclude": [
+          "aws-sdk"
+        ],
+        "tsconfig": "tsconfig.json"
+      },
+      "custom": {
+        "serverless-offline": {
+          "httpPort": 3003,
+          "lambdaPort": "3005      fuera del 3002",
+          "websocketPort": 3004,
+          "host": "0.0.0.0",
+          "noPrependStageInUrl": true
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "stage": "local",
+      "environment": {
+        "NODE_ENV": "development",
+        "PORT": "3003",
+        "CUSTOMERS_BASE": "http://localhost:3001",
+        "ORDERS_BASE": "http://localhost:3002",
+        "SERVICE_TOKEN": "<REDACTED>",
+        "JWT_SECRET": "<REDACTED>"
+      },
+      "region": "us-east-1",
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "Invalid server options  {\n  \"host\": \"0.0.0.0\",\n  \"app\": {},\n  \"routes\": {},\n  \"port\" \u001b[31m[1]\u001b[0m: \"3005      fuera del 3002\"\n}\n\u001b[31m\n[1] \"port\" does not match any of the allowed types\u001b[0m",
+      "stack": "Error: Invalid server options  {\n  \"host\": \"0.0.0.0\",\n  \"app\": {},\n  \"routes\": {},\n  \"port\" \u001b[31m[1]\u001b[0m: \"3005      fuera del 3002\"\n}\n\u001b[31m\n[1] \"port\" does not match any of the allowed types\u001b[0m\n    at exports.apply (C:\\Users\\SegundoDiaz-MS4M\\Documents\\CURSO\\B2B\\b2b_t3nich4l\\lambda-orchestrator\\node_modules\\@hapi\\hapi\\lib\\config.js:20:15)\n    at internals.setup (C:\\Users\\SegundoDiaz-MS4M\\Documents\\CURSO\\B2B\\b2b_t3nich4l\\lambda-orchestrator\\node_modules\\@hapi\\hapi\\lib\\core.js:676:23)\n    at new module.exports.internals.Core (C:\\Users\\SegundoDiaz-MS4M\\Documents\\CURSO\\B2B\\b2b_t3nich4l\\lambda-orchestrator\\node_modules\\@hapi\\hapi\\lib\\core.js:117:46)\n    at new module.exports (C:\\Users\\SegundoDiaz-MS4M\\Documents\\CURSO\\B2B\\b2b_t3nich4l\\lambda-orchestrator\\node_modules\\@hapi\\hapi\\lib\\server.js:22:18)\n    at new HttpServer (file:///C:/Users/SegundoDiaz-MS4M/Documents/CURSO/B2B/b2b_t3nich4l/lambda-orchestrator/node_modules/serverless-offline/src/lambda/HttpServer.js:24:20)\n    at new Lambda (file:///C:/Users/SegundoDiaz-MS4M/Documents/CURSO/B2B/b2b_t3nich4l/lambda-orchestrator/node_modules/serverless-offline/src/lambda/Lambda.js:16:24)\n    at #createLambda (file:///C:/Users/SegundoDiaz-MS4M/Documents/CURSO/B2B/b2b_t3nich4l/lambda-orchestrator/node_modules/serverless-offline/src/ServerlessOffline.js:187:20)\n    at async ServerlessOffline.start (file:///C:/Users/SegundoDiaz-MS4M/Documents/CURSO/B2B/b2b_t3nich4l/lambda-orchestrator/node_modules/serverless-offline/src/ServerlessOffline.js:88:7)\n    at async #startWithExplicitEnd (file:///C:/Users/SegundoDiaz-MS4M/Documents/CURSO/B2B/b2b_t3nich4l/lambda-orchestrator/node_modules/serverless-offline/src/ServerlessOffline.js:165:5)\n    at async PluginManager.runHooks (file:///C:/Users/SegundoDiaz-MS4M/.serverless/releases/4.22.0/package/dist/sf-core.js:1323:11085)"
+    },
+    "serviceRawFile": "service: lambda-orchestrator\r\nframeworkVersion: '4'\r\n\r\nplugins:\r\n  - serverless-offline\r\n\r\nprovider:\r\n  name: aws\r\n  runtime: nodejs20.x\r\n  stage: local\r\n  environment:\r\n    NODE_ENV: development\r\n    PORT: ${env:PORT, '3003'}\r\n    CUSTOMERS_BASE: ${env:CUSTOMERS_BASE, 'http://localhost:3001'}\r\n    ORDERS_BASE: ${env:ORDERS_BASE, 'http://localhost:3002'}\r\n    SERVICE_TOKEN: ${env:SERVICE_TOKEN, 'service-secret'}\r\n    JWT_SECRET: ${env:JWT_SECRET, 'super_secret_for_jwt'}\r\n\r\nfunctions:\r\n  orchestrate:\r\n    handler: src/handler.handler\r\n    events:\r\n      - httpApi:\r\n          path: /orchestrator/create-and-confirm-order\r\n          method: post\r\n\r\n\r\nbuild:\r\n  esbuild: true\r\n  sourcemap: true\r\n  minify: false\r\n  #format: esm     \r\n  format: cjs         \r\n  target: node20\r\n  exclude:\r\n    - aws-sdk\r\n  tsconfig: tsconfig.json\r\n\r\ncustom:\r\n  serverless-offline:\r\n    httpPort: 3003        \r\n    lambdaPort: 3005      fuera del 3002\r\n    websocketPort: 3004   \r\n    host: 0.0.0.0         \r\n    noPrependStageInUrl: true\r\n\r\n",
+    "command": [
+      "offline"
+    ],
+    "options": {},
+    "orgId": "580bdb08-dd62-46ef-a983-e474c3c630d1",
+    "orgName": "kmdkcompany",
+    "userId": "3hz80Cfhd2bBhtfS37",
+    "userName": "kmdkcompany",
+    "serviceProviderAwsAccountId": "012044601378",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}

@@ -86,32 +86,32 @@ services:
       retries: 20
 
   # === ORCHESTRATOR API ===
-  orchestrator-api:
-    build:
-      context: ./lambda-orchestrator
-    container_name: orchestrator_api
-    restart: unless-stopped
-    environment:
-      NODE_ENV: production
-      PORT: 3003
-      CUSTOMERS_BASE: http://customers_api:3001
-      ORDERS_BASE: http://orders-api:3002
-      SERVICE_TOKEN: S3CR3T_T0K3N_K3Y
-      JWT_SECRET: s3cretK3y
-      REQUEST_TIMEOUT_MS: 5000
-      TZ: America/Lima
-    depends_on:
-      customers-api:
-        condition: service_healthy
-      orders-api:
-        condition: service_healthy
-    ports:
-      - "3003:3003"
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://orchestrator_api:3003/health || exit 1"]
-      interval: 5s
-      timeout: 3s
-      retries: 20
+  # orchestrator-api:
+  #   build:
+  #     context: ./lambda-orchestrator
+  #   container_name: orchestrator_api
+  #   restart: unless-stopped
+  #   environment:
+  #     NODE_ENV: production
+  #     PORT: 3003
+  #     CUSTOMERS_BASE: http://customers_api:3001
+  #     ORDERS_BASE: http://orders-api:3002
+  #     SERVICE_TOKEN: S3CR3T_T0K3N_K3Y
+  #     JWT_SECRET: s3cretK3y
+  #     REQUEST_TIMEOUT_MS: 5000
+  #     TZ: America/Lima
+  #   depends_on:
+  #     customers-api:
+  #       condition: service_healthy
+  #     orders-api:
+  #       condition: service_healthy
+  #   ports:
+  #     - "3003:3003"
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "wget -qO- http://orchestrator_api:3003/health || exit 1"]
+  #     interval: 5s
+  #     timeout: 3s
+  #     retries: 20
 
 # === VOLUMENES PERSISTENTES ===
 volumes:

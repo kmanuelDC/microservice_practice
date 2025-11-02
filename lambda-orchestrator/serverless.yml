@@ -1,0 +1,46 @@
+service: lambda-orchestrator
+frameworkVersion: '4'
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: local
+  environment:
+    NODE_ENV: development
+    PORT: ${env:PORT, '3003'}
+    CUSTOMERS_BASE: ${env:CUSTOMERS_BASE, 'http://localhost:3001'}
+    ORDERS_BASE: ${env:ORDERS_BASE, 'http://localhost:3002'}
+    SERVICE_TOKEN: ${env:SERVICE_TOKEN, 'service-secret'}
+    JWT_SECRET: ${env:JWT_SECRET, 'super_secret_for_jwt'}
+
+functions:
+  orchestrate:
+    handler: src/handler.handler
+    events:
+      - httpApi:
+          path: /orchestrator/create-and-confirm-order
+          method: post
+
+
+build:
+  esbuild: true
+  sourcemap: true
+  minify: false
+  #format: esm     
+  format: cjs         
+  target: node20
+  exclude:
+    - aws-sdk
+  tsconfig: tsconfig.json
+
+custom:
+  serverless-offline:
+    httpPort: 3003        
+    lambdaPort: 3005      
+    websocketPort: 3004   
+    host: 0.0.0.0        
+    noPrependStageInUrl: true
+
